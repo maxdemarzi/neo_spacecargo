@@ -11,7 +11,7 @@ public class RouteComparator  <T extends Comparable<T>> implements Comparator<Ha
     public int compare(HashMap route1, HashMap route2) {
         int c;
         // Shortest path first
-        c = ((Integer)((ArrayList)route1.get("transits")).size()).compareTo(((ArrayList)route2.get("transits")).size());
+        c = ((Integer)((ArrayList)route1.get("steps")).size()).compareTo(((ArrayList)route2.get("steps")).size());
 
 
         // Shortest travel time next

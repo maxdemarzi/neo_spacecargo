@@ -122,13 +122,16 @@ public class Service {
             // Bi-Directional
             InitialBranchState.State<Long> ibs = new InitialBranchState.State<>((Long)input.get("departure_long"), (Long)input.get("arrival_long"));
 
+            RouteEvaluator routeEvaluator = new RouteEvaluator((Long)input.get("departure_long"), (Long)input.get("arrival_long"));
+
             TraversalDescription td = db.traversalDescription()
                     .breadthFirst()
                     .expand(routeExpander, ibs)
                     .uniqueness(Uniqueness.RELATIONSHIP_PATH);
 
             BidirectionalTraversalDescription bidirtd = db.bidirectionalTraversalDescription()
-                    .mirroredSides(td);
+                    .mirroredSides(td)
+                    .collisionEvaluator(routeEvaluator);
 
             for (org.neo4j.graphdb.Path position : bidirtd.traverse(startingPoint, endingPoint)) {
                 HashMap<String, Object> result = new HashMap<>();
