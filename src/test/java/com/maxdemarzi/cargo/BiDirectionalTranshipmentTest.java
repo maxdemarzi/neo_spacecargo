@@ -33,6 +33,7 @@ public class BiDirectionalTranshipmentTest {
                     //        12-71-t-101-94
                     //        12-101-t-71-9
                     //        12-101-t-71-67
+                    // INVALID: 12-71-t-46-67
                     .append("")
                     .append("CREATE (d1:Docking {code:'d1', departure_date:'11/06/2215 12:00 PM', departure:7758158400, arrival_date:'11/05/2215 12:00 PM', arrival:7758072000})")
                     .append("CREATE (d2:Docking {code:'d2', departure_date:'11/08/2215 12:00 PM', departure:7758331200, arrival_date:'11/07/2215 12:00 PM', arrival:7758244800})")
@@ -43,14 +44,19 @@ public class BiDirectionalTranshipmentTest {
                     .append("CREATE (d6:Docking {code:'d6', departure_date:'11/08/2215 12:00 PM', departure:7758331200, arrival_date:'11/07/2215 12:00 PM', arrival:7758244800})")
                     .append("CREATE (d7:Docking {code:'d7', departure_date:'11/10/2215 12:00 PM', departure:7758504000, arrival_date:'11/09/2215 3:00 PM', arrival:7758428400})")
 
+                    .append("CREATE (d8:Docking {code:'d8', departure_date:'11/08/2215 11:59 AM', departure:7758331140, arrival_date:'11/07/2215 12:00 PM', arrival:7758244800})")
+                    .append("CREATE (d9:Docking {code:'d9', departure_date:'11/10/2215 12:00 PM', departure:7758505200, arrival_date:'11/09/2215 3:20 PM', arrival:7758429600})")
+
                     .append("MERGE (st9:Station {name:'Aeddin'})")
                     .append("MERGE (st12:Station {name:'Aldik'})")
+                    .append("MERGE (st46:Station {name:'Hahyil'})")
                     .append("MERGE (st67:Station {name:'Ladistier'})")
                     .append("MERGE (st71:Station {name:'Lirerim'})")
                     .append("MERGE (st94:Station {name:'Romi'})")
                     .append("MERGE (st101:Station {name:'Torvi'})")
 
                     .append("MERGE (st71)-[:TRANSHIPMENT {transit_time:14400}]->(st101)")
+                    .append("MERGE (st71)-[:TRANSHIPMENT {transit_time:86400}]->(st46)")
 
                     .append("MERGE (st12)-[:HAS_DOCKING]->(d1)")
                     .append("MERGE (st71)-[:HAS_DOCKING]->(d2)")
@@ -61,15 +67,17 @@ public class BiDirectionalTranshipmentTest {
                     .append("MERGE (st101)-[:HAS_DOCKING]->(d6)")
                     .append("MERGE (st94)-[:HAS_DOCKING]->(d7)")
 
+                    .append("MERGE (st46)-[:HAS_DOCKING]->(d8)")
+                    .append("MERGE (st67)-[:HAS_DOCKING]->(d9)")
+
                     .append("CREATE (d1)-[:CONNECTED_TO {transit_time:86400}]->(d2)")
                     .append("CREATE (d2)-[:CONNECTED_TO {transit_time:87600}]->(d3)")
                     .append("CREATE (d2)-[:CONNECTED_TO {transit_time:98400}]->(d4)")
 
                     .append("CREATE (d5)-[:CONNECTED_TO {transit_time:86400}]->(d6)")
                     .append("CREATE (d6)-[:CONNECTED_TO {transit_time:87600}]->(d7)")
-                    .append("CREATE (d6)-[:CONNECTED_TO {transit_time:174000}]->(d8)")
 
-                    .append("CREATE (d9)-[:CONNECTED_TO {transit_time:86400}]->(d10)")
+                    .append("CREATE (d8)-[:CONNECTED_TO {transit_time:86400}]->(d9)")
 
                     .toString();
 

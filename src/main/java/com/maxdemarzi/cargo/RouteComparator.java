@@ -23,7 +23,7 @@ public class RouteComparator  <T extends Comparable<T>> implements Comparator<Ha
         if (c == 0) {
             ArrayList<Map> steps1 = (ArrayList) route1.get("steps");
             ArrayList<Map> steps2 = (ArrayList) route2.get("steps");
-            c = ((Long) steps1.get(steps1.size() - 1).get("arrival")).compareTo((Long) (steps2.get(steps2.size() - 1).get("arrival")));
+            c = ((Long) steps1.get(steps1.size() - 3).get("arrival")).compareTo((Long) (steps2.get(steps2.size() - 3).get("arrival")));
 
             // By Departure Docking Code
             if (c == 0) {
