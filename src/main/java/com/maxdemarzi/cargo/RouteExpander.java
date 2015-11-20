@@ -85,6 +85,21 @@ public class RouteExpander implements PathExpander<Long> {
 
                     // When we reach a station, we need to continue to its dockings or other stations via transhipment.
                     if ( path.endNode().hasLabel(Labels.Station)) {
+
+                        // If we transfered here, our new times should be our arrival - transit time
+                        if (path.lastRelationship().isType(RelationshipTypes.TRANSHIPMENT)) {
+                            Node lastDocking = null;
+                            Iterator<Node> iterator = path.reverseNodes().iterator();
+                            while (iterator.hasNext()) {
+                                lastDocking = iterator.next();
+                                if (lastDocking.hasLabel(Labels.Docking)) { break;}
+                            }
+
+                            Long previousArrival = (long)lastDocking.getProperty("arrival");
+                            previousArrival -= (long)path.lastRelationship().getProperty("transit_time");
+                            branchState.setState(previousArrival);
+                        }
+
                         return path.endNode().getRelationships(
                                 RelationshipTypes.HAS_DOCKING,
                                 RelationshipTypes.TRANSHIPMENT);
